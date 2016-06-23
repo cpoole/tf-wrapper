@@ -1,32 +1,49 @@
+#!/bin/python
+
+#FOLLOWING FILE IS IN PYTHON 2.7
+
 # global packages
 import argparse
 import os
 import shutil
 import subprocess
 import glob
+import json
+import pprint
 
 # debug
 from pdb import set_trace as bp
 
-# local packages
-import terraform_remote_config
-
 # constants
+REMOTE_STATE_VARS           = "./.environments/envVars.json"
+ENV_DICTIONARY               = {}
 THIS_DIR                    = os.path.dirname(os.path.realpath(__file__))
-BUCKET_NAME                 = terraform_remote_config.bucket
-BUCKET_KEY_PREFIX           = terraform_remote_config.bucket_prefix
-BUCKET_REGION               = terraform_remote_config.region
 CURRENT_TFSTATE_FILE        = '.terraform/terraform.tfstate'
 CURRENT_TFSTATE_BACKUP_FILE = '.terraform/terraform.tfstate.backup'
 HELP_DESCRIPTION            = '''This script allows us to use the same tf configuration
                                  for different environments. \n
                                  example use: python terraform-env.py dev plan
                               '''
+# populate the ENV_DICTIONARY
+if os.path.isfile(REMOTE_STATE_VARS):
+    ENV_DICTIONARY = {}
+    with open(REMOTE_STATE_VARS, 'r') as file:
+        ENV_DICTIONARY = json.loads(file.read())
+else:
+    ENV_DICTIONARY = {}
+    ENV_DICTIONARY['bucket'] = raw_input("Please input the s3 bucket name where you will store your remote state: ")
+    ENV_DICTIONARY['bucket_prefix'] = raw_input("Please input the path in the bucket where you will store your remote state: ")
+    ENV_DICTIONARY['region'] = raw_input("Please input the region in which the bucket lives: ")
+    if not os.path.isdir('./.environments'):
+        os.mkdir('./.environments')
+    if not os.path.isdir('./env'):
+        os.mkdir('./env')
+    with open(REMOTE_STATE_VARS, 'w') as file:
+        file.write(json.dumps(ENV_DICTIONARY))
 
 # color helpers
 color_red        = '\033[01;31m{0}\033[00m'
 color_green      = '\033[1;36m{0}\033[00m'
-
 
 # parser
 parser = argparse.ArgumentParser(description= HELP_DESCRIPTION)
@@ -42,8 +59,8 @@ tf_args         = parser_values.args if parser_values.args else ''
 
 # vars based on parser
 environment_dir      = 'env/{}'.format(tf_environment)
-bucket_key           = '{}/state/{}'.format(BUCKET_KEY_PREFIX, tf_environment)
-environment_file     = '.terraform/environment' #used to see if we're in a different environment than the last run
+bucket_key           = '{}/state/{}'.format(ENV_DICTIONARY['bucket_prefix'], tf_environment)
+environment_file     = '.environment/environment' #used to see if we're in a different environment than the last run
 previous_environment = 'previous' # TBC
 
 # make sure files exists in dir based on env name
@@ -71,9 +88,9 @@ if not environment_is_same:
     # configure remote state
     subprocess.call(['terraform', 'remote', 'config', 
                      '-backend', 'S3',
-                     '-backend-config=bucket={}'.format(BUCKET_NAME),
+                     '-backend-config=bucket={}'.format(ENV_DICTIONARY['bucket']),
                      '-backend-config=key={}'.format(bucket_key),
-                     '-backend-config=region={}'.format(BUCKET_REGION)
+                     '-backend-config=region={}'.format(ENV_DICTIONARY['region'])
                      ]) 
 
     # add current environment variable to file
