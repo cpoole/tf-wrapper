@@ -49,13 +49,13 @@ color_green      = '\033[1;36m{0}\033[00m'
 parser = argparse.ArgumentParser(description= HELP_DESCRIPTION)
 parser.add_argument('environment', help='the environment you want to use. matches to the folder name under env')
 parser.add_argument('action', help='the action passed to terraform')
-parser.add_argument('args', nargs='*', help='extra terraform args')
+parser.add_argument('args', nargs=argparse.REMAINDER, help='extra terraform args')
 
 # values from parser
 parser_values   = parser.parse_args()
 tf_environment  = parser_values.environment
 tf_action       = parser_values.action
-tf_args         = parser_values.args if parser_values.args else ''
+tf_args         = parser_values.args
 
 # vars based on parser
 environment_dir      = 'env/{}'.format(tf_environment)
@@ -107,13 +107,25 @@ for file in tf_env_file_names:
     to_location   = '{}/environment.{}'.format(THIS_DIR, file)
     shutil.copy(from_location, to_location)
 
+# set tfvars file as terraform.tfvars
+tfvars_file = glob.glob('*.tfvars')[0] # there should only be one
+to_location = '{}/terraform.tfvars'.format(THIS_DIR)
+shutil.copy(tfvars_file, to_location)
+
 # move back to root dir to perform ops 
 os.chdir(THIS_DIR)
 
 # run terraform
-subprocess.call(['terraform', tf_action])
+if tf_args:
+    additional_args_string = ' '.join(tf_args)
+    subprocess.call(['terraform', tf_action, additional_args_string])
+else:
+    subprocess.call(['terraform', tf_action])   
 
 # remove environment specific files
 for file in tf_env_file_names:
     full_file_name = '{}.{}'.format('environment', file)
     os.remove(full_file_name)
+
+# remove terraform.tfvars
+os.remove('terraform.tfvars')
