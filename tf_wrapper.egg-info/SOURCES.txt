@@ -1,0 +1,10 @@
+README.rst
+setup.cfg
+setup.py
+tf/__init__.py
+tf_wrapper.egg-info/PKG-INFO
+tf_wrapper.egg-info/SOURCES.txt
+tf_wrapper.egg-info/dependency_links.txt
+tf_wrapper.egg-info/entry_points.txt
+tf_wrapper.egg-info/requires.txt
+tf_wrapper.egg-info/top_level.txt
