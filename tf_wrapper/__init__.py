@@ -30,8 +30,7 @@ def main():
     parser = argparse.ArgumentParser(description= HELP_DESCRIPTION)
     parser.add_argument('-environment', help='the environment you want to use. matches to the folder name under env')
     parser.add_argument('-reconfigure', help='pass -reconfigure true if you would like to change the remote state bucket details')
-    parser.add_argument('-action', nargs='*', help='the action passed to terraform')
-    #parser.add_argument('args', nargs='*', help='extra terraform args')
+    parser.add_argument('-action', nargs='argparse.REMAINDER', help='the action passed to terraform')
     
     # values from parser
     parser_values   = parser.parse_args()
