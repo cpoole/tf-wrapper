@@ -23,6 +23,8 @@ HELP_DESCRIPTION            = '''This script allows us to use the same tf config
                                  for different environments. \n
                                  example use: python terraform-env.py -environment dev -action plan
                               '''
+GIT_REPO                    = None
+
 def main():
     # parser
     parser = argparse.ArgumentParser(description= HELP_DESCRIPTION)
@@ -39,7 +41,12 @@ def main():
     tf_action       = parser_values.action
     #tf_args         = parser_values.args if parser_values.args else ''
     
-    
+    #make sure git is initialized
+#    if not (os.path.isdir("./.git"):
+#        gitRemote = raw_input("git directory is not yet initialized. This tool requires the current directory to be tracked by git. \
+#               Please enter the remote ssh address for the git remote repo:")
+#        GIT_REPO = init_repository('test')
+
     # populate the ENV_DICTIONARY
     if (os.path.isfile(REMOTE_STATE_VARS) and not parser_values.reconfigure):
         ENV_DICTIONARY = {}
@@ -81,4 +88,6 @@ def main():
     
     # run terraform
     print("running: terraform {}".format(" ".join(tf_action)))
-    subprocess.call(['terraform', " ".join(tf_action)])
+    lastVal = subprocess.call(['terraform', " ".join(tf_action)])
+    if lastVal == 0 and " ".join(tf_action).find('apply'):
+        subprocess.call(['terraform', 'remote push'])

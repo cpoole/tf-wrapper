@@ -1,7 +1,7 @@
 README.rst
 setup.cfg
 setup.py
-tf/__init__.py
+tf_wrapper/__init__.py
 tf_wrapper.egg-info/PKG-INFO
 tf_wrapper.egg-info/SOURCES.txt
 tf_wrapper.egg-info/dependency_links.txt
