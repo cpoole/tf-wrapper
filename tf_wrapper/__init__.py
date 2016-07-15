@@ -92,5 +92,5 @@ def main():
     # run terraform
     print("running: terraform {}".format(" ".join(tf_action)))
     lastVal = subprocess.call(['terraform', " ".join(tf_action)])
-    if lastVal == 0 and " ".join(tf_action).find('apply'):
-        subprocess.call(['terraform', 'remote push'])
+    if lastVal == 0 and " ".join(tf_action).find('apply') != -1:
+        subprocess.call(['terraform', 'remote', 'push'])
