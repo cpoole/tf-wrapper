@@ -26,12 +26,15 @@ HELP_DESCRIPTION            = '''This script allows us to use the same tf config
 GIT_REPO                    = None
 
 def main():
+    #raw input compatibility for python 2 and 3 
+    global input
+    try: input = raw_input
+    except NameError: pass
     # parser
     parser = argparse.ArgumentParser(description= HELP_DESCRIPTION)
     parser.add_argument('-environment', help='the environment you want to use. matches to the folder name under env')
     parser.add_argument('-reconfigure', help='pass -reconfigure true if you would like to change the remote state bucket details')
-    parser.add_argument('-action', nargs='*', help='the action passed to terraform')
-    #parser.add_argument('args', nargs='*', help='extra terraform args')
+    parser.add_argument('-action', nargs=argparse.REMAINDER, help='the action passed to terraform')
     
     # values from parser
     parser_values   = parser.parse_args()
@@ -54,9 +57,9 @@ def main():
             ENV_DICTIONARY = json.loads(file.read())
     else:
         ENV_DICTIONARY = {}
-        ENV_DICTIONARY['bucket'] = raw_input("Please input the s3 bucket name where you will store your remote state: ")
-        ENV_DICTIONARY['bucket_prefix'] = raw_input("Please input the path in the bucket where you will store your remote state: ")
-        ENV_DICTIONARY['region'] = raw_input("Please input the region in which the bucket lives: ")
+        ENV_DICTIONARY['bucket'] = input("Please input the s3 bucket name where you will store your remote state: ")
+        ENV_DICTIONARY['bucket_prefix'] = input("Please input the path in the bucket where you will store your remote state (including the trailing /): ")
+        ENV_DICTIONARY['region'] = input("Please input the region in which the bucket lives: ")
         if not os.path.isdir(REMOTE_STATE_VAR_DIR):
             os.mkdir(REMOTE_STATE_VAR_DIR)
         with open(REMOTE_STATE_VARS, 'w') as file:
@@ -82,7 +85,7 @@ def main():
     subprocess.call(['terraform', 'remote', 'config',
                      '-backend', 'S3',
                      '-backend-config=bucket={}'.format(ENV_DICTIONARY['bucket']),
-                     '-backend-config=key={}'.format(ENV_DICTIONARY['bucket_prefix']),
+                     '-backend-config=key={}{}'.format(ENV_DICTIONARY['bucket_prefix'],tf_environment),
                      '-backend-config=region={}'.format(ENV_DICTIONARY['region'])
                      ])
     
