@@ -10,6 +10,7 @@ import subprocess
 import glob
 import json
 import pprint
+import shutil
 
 # debug
 from pdb import set_trace as bp
@@ -72,6 +73,8 @@ def main():
     # vars based on parser
     environment_file = '{}/{}.tf'.format(REMOTE_STATE_VAR_DIR, tf_environment)
     
+    if os.path.isdir("./.terraform"):
+        shutil.rmtree('./.terraform')
     # get environment from file
     if not os.path.isfile(environment_file):
         raise Exception("There is no tf file for the environment specified. please add the file ./environments/{}.tf".format(tf_environment))
