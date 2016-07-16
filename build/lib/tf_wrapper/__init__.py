@@ -73,8 +73,10 @@ def main():
     # vars based on parser
     environment_file = '{}/{}.tf'.format(REMOTE_STATE_VAR_DIR, tf_environment)
     
-    if os.path.isdir("./.terraform"):
-        shutil.rmtree('./.terraform')
+    if os.path.isfile("./.terraform/terraform.tfstate"):
+        os.remove('./.terraform/terraform.tfstate')
+    if os.path.isfile("./.terraform/terraform.tfstate.backup"):
+        os.remove('./.terraform/terraform.tfstate.backup')
     # get environment from file
     if not os.path.isfile(environment_file):
         raise Exception("There is no tf file for the environment specified. please add the file ./environments/{}.tf".format(tf_environment))
@@ -94,6 +96,7 @@ def main():
     
     # run terraform
     print("running: terraform {}".format(" ".join(tf_action)))
-    lastVal = subprocess.call(['terraform', " ".join(tf_action)])
+    tf_action.insert(0, 'terraform')
+    lastVal = subprocess.call(tf_action)
     if lastVal == 0 and " ".join(tf_action).find('apply') != -1:
         subprocess.call(['terraform', 'remote', 'push'])
