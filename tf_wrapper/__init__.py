@@ -1,6 +1,6 @@
-#!/bin/python
+#!/bin/python3
 
-#FOLLOWING FILE IS IN PYTHON 2.7
+#FOLLOWING FILE IS IN PYTHON 3.5.1
 
 # global packages
 import argparse
