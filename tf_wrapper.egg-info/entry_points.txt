@@ -1,0 +1,3 @@
+[console_scripts]
+tf = tf_wrapper:main
+
