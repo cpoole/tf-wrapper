@@ -101,4 +101,3 @@ def main():
         sym_path  = './{}'.format(file)
         if os.path.islink(sym_path):
             os.remove(sym_path)
-main()
