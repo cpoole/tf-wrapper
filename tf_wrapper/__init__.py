@@ -47,7 +47,6 @@ def main():
     environment_dir_path     = '{}/{}'.format(ENVIRONMENTS_BASE_PATH, tf_environment)
     remote_config_file_path  = '{}/{}'.format(ENVIRONMENTS_BASE_PATH, ENVIRONMENT_FILE_NAME)
     remote_config_dictionary = {}
-    tfvars_file_path         = '{}/terraform.tfvars'.format(environment_dir_path)
 
     # configure remote config variables
     if (os.path.isfile(remote_config_file_path) and not parser_values.reconfigure):
@@ -69,8 +68,8 @@ def main():
         os.remove('./.terraform/terraform.tfstate.backup')
     
     # make sure tfvars file exists
-    if not os.path.isfile(tfvars_file_path):
-        raise Exception('There is no tf file for the environment specified. please add the file {}'.format(tfvars_file_path))
+    if os.listdir(environment_dir_path) == []:
+        raise Exception('There are no tf files for the environment specified. please add terraform files to {}/'.format(environment_dir_path))
     
     # (re)create symlink
     for file in os.listdir('./{}'.format(environment_dir_path)):

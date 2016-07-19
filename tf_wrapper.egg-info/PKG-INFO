@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: tf-wrapper
-Version: 0.0.18
+Version: 0.0.19
 Summary: A terraform wrapper
 Home-page: https://bitbucket.com/daqri1/tf-wrapper
 Author: Matt Rabinovitch and Connor Poole
