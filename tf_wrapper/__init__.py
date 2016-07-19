@@ -45,7 +45,7 @@ def main():
     tf_environment           = parser_values.environment
     tf_action                = parser_values.action
     environment_dir_path     = '{}/{}'.format(ENVIRONMENTS_BASE_PATH, tf_environment)
-    remote_config_file_path  = '{}/{}'.format(environment_dir_path, ENVIRONMENT_FILE_NAME)
+    remote_config_file_path  = '{}/{}'.format(ENVIRONMENTS_BASE_PATH, ENVIRONMENT_FILE_NAME)
     remote_config_dictionary = {}
     tfvars_file_path         = '{}/terraform.tfvars'.format(environment_dir_path)
 
