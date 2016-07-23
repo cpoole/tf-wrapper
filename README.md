@@ -4,8 +4,7 @@ Terraform Wrapper
 This project is intended to provide a wrapper around terraform for any projects where infrastructure might be duplicated in different environments. If you maintain different environments (dev, stage, prod) in separate regions, data centers, or different clouds this tool will help you maintain consistency across your infrastructure.
 
 The Fundamentals
-+++++++++++++
-
+================
 **Requirements**
 you must have AWS credentials, and terraform already installed.
 
