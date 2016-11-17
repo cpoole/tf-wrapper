@@ -6,9 +6,11 @@ This project is intended to provide a wrapper around terraform for any projects 
 The Fundamentals
 ================
 **Requirements**
-you must have AWS credentials, and terraform already installed. The AWS credentials file must have the individual profiles labeled
+
+You must have AWS credentials, and terraform already installed. The AWS credentials file must have the individual profiles labeled
 
 **Project Structure**
+
 This project requires the following format:
 
 ```
@@ -34,10 +36,17 @@ Every time you run this package you need to specify the environment and the acti
 A sample command would be: ``tf -environment prod -action plan``
 
 **Usage Details**
+
 When you run this command the tf-wrapper will:
 - Symlink all files under ``./environments/<environment_name>/`` into the top level directory.
 - It will delete the ``.terraform/terraform.tfstate`` and ``.terraform/terraform.tfstate.backup`` files as this project requires remote state config, negating the need for local copies of state after the run has completed.
 - For commands ``apply`` and ``destroy`` the resulting run state will automatically be pushed.
 
 **Upgrading from < 1.0.0**
+
 Please run ``tf -reconfigure true`` to update your terraform files to the latest format
+
+**Authors**
+
+Connor Poole @cpoole
+Matt Rabinovitch @roobytwo

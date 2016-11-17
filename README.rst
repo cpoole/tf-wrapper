@@ -42,3 +42,7 @@ When you run this command the tf-wrapper will:
 
 **Upgrading from < 1.0.0**
 Please run ``tf -reconfigure true`` to update your terraform files to the latest format
+
+**Authors**
+Connor Poole @cpoole
+Matt Rabinovitch @roobytwo
