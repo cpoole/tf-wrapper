@@ -18,13 +18,13 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.0.19',
+    version='1.0.0',
 
     description='A terraform wrapper',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://bitbucket.com/daqri1/tf-wrapper',
+    url='https://github.com/cpoole/tf-wrapper',
 
     # Author details
     author='Matt Rabinovitch and Connor Poole',
