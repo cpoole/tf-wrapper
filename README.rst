@@ -39,3 +39,6 @@ When you run this command the tf-wrapper will:
 - Symlink all files under ``./environments/<environment_name>/`` into the top level directory.
 - It will delete the ``.terraform/terraform.tfstate`` and ``.terraform/terraform.tfstate.backup`` files as this project requires remote state config, negating the need for local copies of state after the run has completed.
 - For commands ``apply`` and ``destroy`` the resulting run state will automatically be pushed.
+
+**Upgrading from < 1.0.0**
+Please run ``tf -reconfigure true`` to update your terraform files to the latest format
