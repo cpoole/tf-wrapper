@@ -29,6 +29,26 @@ This project requires the following format:
 
 In each project shared resources and variables are placed at the top level. Environment specific resources are placed under ``./environments/<environment_name>/<any files you want>``. The file ``./environment/environment_vars.json`` stores the information about your AWS remote state.
 
+**Example environment_vars.json**
+
+```
+{
+    "hub": {
+        "region": "us-west-2",
+        "bucket_prefix": "config/tf/implementations/rancher-hosts/",
+        "profile": "profile1",
+        "bucket": "bucket-for-profile1"
+    },
+    "prod": {
+        "region": "us-west-2",
+        "bucket_prefix": "config/tf/implementations/rancher-hosts/",
+        "profile": "profile2",
+        "bucket": "bucket-for-profile2"
+    }
+}
+```
+please note the name of each environment definition must be the same as the name of the environment folder
+
 **Package Use**
 
 Every time you run this package you need to specify the environment and the action. the environment is the name of the folder under ``./environments`` and the action is the typical action passed to terraform (ie. plan, destroy, apply, etc.)
