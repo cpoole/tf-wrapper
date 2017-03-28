@@ -1,6 +1,9 @@
+**DEPRICATION NOTICE**
+As of terraform 0.9.2 remote state management using s3 is greatly improved. In addition terraform now has the concept of environments. 
+I highly suggest migrating to this format and using map vars to store environment specific variables with the terraform.environment as a lookup key.
+
 Terraform Wrapper
 =================
-
 This project is intended to provide a wrapper around terraform for any projects where infrastructure might be duplicated in different environments. If you maintain different environments (dev, stage, prod) in separate regions, data centers, or different clouds this tool will help you maintain consistency across your infrastructure.
 
 The Fundamentals
